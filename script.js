@@ -19,8 +19,8 @@ $(function() { // Makes sure that your function is called once all the DOM eleme
       pet_info['weight']++;
       pet_info['happiness'] += 5;
       pet_info['energy'] += 5;
-      showComment("Yum! Best treat ever!");
       checkAndUpdatePetInfoInHtml();
+      showComment("Yum! Best treat ever!");
     }
     
     function clickedPlayButton() {
@@ -111,3 +111,58 @@ $(function() { // Makes sure that your function is called once all the DOM eleme
       updatePetSize();
     }
   
+    // Part 2.1: Console logging
+    function demoConsoleLogs() {
+      console.info('INFO: Giga Pet loaded');
+      console.log('LOG: pet_info =', pet_info);
+      console.warn('WARN: Rex energy is getting low');
+      console.error('ERROR: Rex refused the treat');
+
+      console.table([
+        { name: pet_info.name, weight: pet_info.weight, happiness: pet_info.happiness, energy: pet_info.energy },
+        { name: 'Max', weight: 30, happiness: 10, energy: 5 }
+      ]);
+
+      console.group('Rex stats');
+      console.log('Weight:', pet_info.weight);
+      console.log('Happiness:', pet_info.happiness);
+      console.log('Energy:', pet_info.energy);
+      console.groupEnd();
+
+      console.log(
+        '%cRex says woof!',
+        'color:#fff; background:#e67e22; font-size:20px; padding:4px 8px; border-radius:4px;'
+      );
+    }
+
+    // Part 2.2: Browser-logged messages
+    function trigger404() {
+      fetch('api/does-not-exist.json');
+      $('<img>').attr('src', 'images/missing-pet.png').appendTo('body');
+    }
+
+    function triggerTypeError() {
+      const nothing = undefined;
+      console.log(nothing.length);
+    }
+
+    function triggerViolation() {
+      const start = Date.now();
+      while (Date.now() - start < 400) {}
+    }
+
+    // Part 2.4: Intentional bug 
+    function addTreatsToWeight() {
+      let weight = 20;
+      let treats = $('#treat-count').val();
+      let newWeight = weight + Number(treats);
+      $('#debug-result').text('Rex weighs ' + newWeight + ' lbs');
+    }
+
+    $(function () {
+      demoConsoleLogs();
+      $('#btn-404').click(trigger404);
+      $('#btn-typeerror').click(triggerTypeError);
+      $('#btn-violation').click(triggerViolation);
+      $('#btn-debug').click(addTreatsToWeight);
+    });
